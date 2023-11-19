@@ -26,16 +26,18 @@ class FirestoreClient:
         users_ref = db.collection('users')
 
         # Query to check if the device ID exists in the "device_udid" field
-        query_snapshot = users_ref.get()
+        documents = users_ref.get()
 
         # Check each document in the "users" collection
         is_registered = False
-        for document in query_snapshot:
+        for document in documents:
+            print("debug1")
             # Access the "device_udid" field for each user
-            user_device_udid = document['device_udid']
-
+            user_device_udid = document.get('device_udid')
+            print("debug1.5")
             # If the device ID matches, consider it registered
             if user_device_udid == device_udid:
+                print("debug1")
                 is_registered = True
                 print("debug check")
                 break  # No need to continue checking
@@ -47,13 +49,13 @@ class FirestoreClient:
         users_ref = db.collection('users')
 
         # Query to check if the provided username and password match any documents
-        query_snapshot = users_ref.get()
+        documents = users_ref.get()
 
         # Check if any documents match the query
         is_logged_in = False
-        for document in query_snapshot:
-            user_username = document['username']
-            user_password = document['password']
+        for document in documents:
+            user_username = document.get('username')
+            user_password = document.get('password')
 
             # If the device ID matches, consider it registered
             if username == user_username and password == user_password:
@@ -71,8 +73,8 @@ class FirestoreClient:
             # Fetch the latest user key
             latest_user_key = 1
             try:
-                query_snapshot = users_ref.order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()
-                latest_user_key = int(query_snapshot[0].id.replace('user', '')) + 1
+                documents = users_ref.order_by("id", direction=firestore.Query.DESCENDING).limit(1).get()
+                latest_user_key = int(documents[0].id.replace('user', '')) + 1
                 print(latest_user_key)
 
             except Exception as e:

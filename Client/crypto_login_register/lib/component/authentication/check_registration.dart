@@ -9,12 +9,12 @@ class RegistrationService {
       final serverUrl = "http://192.168.100.58:5000/check_registration";
 
       // Get the device ID using Flutter_UDID
-      String deviceId = await FlutterUdid.consistentUdid;
+      String device_udid = await FlutterUdid.consistentUdid;
 
       // Send a request to the Python server to check registration status
       final response = await http.post(
         Uri.parse(serverUrl),
-        body: {'device_udid': deviceId},
+        body: {'device_udid': device_udid},
       );
 
       if (response.statusCode == 200) {
