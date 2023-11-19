@@ -1,5 +1,8 @@
 import 'package:flutter_udid/flutter_udid.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:crypto_login_register/component/cryptography/server_public_key.dart';
 
 class RegisterService {
   static Future<void> registerUser(String username, String password) async {
@@ -21,6 +24,9 @@ class RegisterService {
       );
 
       if (response.statusCode == 200) {
+        final Map<String, dynamic> data = json.decode(response.body);
+        String serverPublicKey = data['server_public_key'];
+        await saveServerPublicKey(serverPublicKey);
         print('User registered successfully');
       } else {
         print('Failed to register user');

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
 
 import 'package:crypto_login_register/pages/login.dart';
 import 'package:crypto_login_register/pages/dashboard.dart';

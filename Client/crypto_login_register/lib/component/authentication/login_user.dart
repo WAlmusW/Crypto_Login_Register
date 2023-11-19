@@ -1,6 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'package:crypto_login_register/component/cryptography/server_public_key.dart';
+
 class LoginService {
   static Future<void> loginUser(
       String username, String password, Function(bool) callback) async {
@@ -21,7 +23,8 @@ class LoginService {
         // Parse the response and get the login status
         final Map<String, dynamic> data = json.decode(response.body);
         bool isLoggedIn = data['is_logged_in'];
-
+        String serverPublicKey = data['server_public_key'];
+        await saveServerPublicKey(serverPublicKey);
         callback(isLoggedIn);
       } else {
         // Handle the case where the server request fails
